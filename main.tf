@@ -51,9 +51,10 @@ module "ecr_applications" {
   source  = "cloudposse/ecr/aws"
   version = "0.38.0"
 
-  context   = module.this.context
-  name      = each.key
-  delimiter = "/"
+  context     = module.this.context
+  name        = each.key
+  delimiter   = "/"
+  label_order = var.label_orders.ecr
 
   force_delete        = true
   max_image_count     = 10
