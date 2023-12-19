@@ -6,13 +6,35 @@ locals {
 data "aws_iam_policy_document" "policy" {
   statement {
     actions = [
-      "s3:HeadObject",
-      "s3:PutObject",
-      "s3:GetObject",
+      "s3:GetBucketAcl",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:ListAllMyBuckets"
+    ]
+    resources = [
+      "arn:aws:s3:::${module.this.environment}-flink-${module.this.aws_account_id}-${module.this.aws_region}",
+      "arn:aws:s3:::${module.this.namespace}-${module.this.organizational_unit}-datalake",
+    ]
+  }
+  statement {
+    actions = [
+      "s3:Get*",
+      "s3:Delete*",
+      "s3:Put*",
+      "s3:AbortMultipartUpload",
       "s3:ListBucket"
     ]
     resources = [
-      "arn:aws:s3:::${module.this.environment}-datalake-${module.this.aws_account_id}-${module.this.aws_region}/flink/${module.this.tenant}/*",
+      "arn:aws:s3:::${module.this.environment}-flink-${module.this.aws_account_id}-${module.this.aws_region}/*",
+      "arn:aws:s3:::${module.this.namespace}-${module.this.organizational_unit}-datalake/*",
+    ]
+  }
+  statement {
+    actions = [
+      "sts:AssumeRole",
+    ]
+    resources = [
+      "*",
     ]
   }
 }
@@ -53,7 +75,6 @@ module "ecr_applications" {
 
   context     = module.this.context
   name        = each.key
-  delimiter   = "/"
   label_order = var.label_orders.ecr
 
   force_delete        = true
