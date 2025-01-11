@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "policy" {
 
 module "cluster_role_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "5.32.0"
+  version = "5.52.2"
 
   for_each = { for k, policy in local.policies : k => policy }
 
@@ -54,7 +54,7 @@ module "cluster_role_policy" {
 
 module "cluster_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "5.32.0"
+  version = "5.52.2"
 
   create_role = true
 
