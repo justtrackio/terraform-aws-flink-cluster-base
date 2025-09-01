@@ -71,7 +71,7 @@ module "ecr_applications" {
   for_each = { for app in var.applications : app => app }
 
   source  = "cloudposse/ecr/aws"
-  version = "0.38.0"
+  version = "0.44.0"
 
   context     = module.this.context
   name        = each.key
